@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>SpongeBob</title>
+
+<hta:application
+  border="thin"
+  caption="yes"
+  showintaskbar="yes"
+  windowstate="normal"
+/>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<script>
+
+window.resizeTo(420, 520);
+
+var closedImg = "closed.jpg";
+var openImg = "open.jpg";
+
+// Windows Media Player object (THIS is the fix)
+var player = new ActiveXObject("WMPlayer.OCX");
+
+function randomDelay() {
+    return 10000 + Math.floor(Math.random() * 10000);
+}
+
+function loop() {
+
+    setTimeout(function () {
+
+        // open mouth
+        document.getElementById("bob").src = openImg;
+
+        // pick random voice 0–9
+        var num = Math.floor(Math.random() * 10);
+        player.URL = "voice_" + num + ".mp3";
+        player.controls.play();
+
+        // wait until audio ends
+        var check = setInterval(function () {
+
+            if (player.playState == 1) { // stopped
+                clearInterval(check);
+
+                document.getElementById("bob").src = closedImg;
+
+                loop();
+            }
+
+        }, 200);
+
+    }, randomDelay());
+}
+
+window.onload = function () {
+    loop();
+};
+
+</script>
+
+</head>
+
+<body>
+<img id="bob" src="closed.jpg">
+</body>
+</html>
